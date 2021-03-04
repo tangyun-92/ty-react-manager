@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { memo, Suspense } from 'react'
+import { HashRouter } from 'react-router-dom'
+import { renderRoutes } from 'react-router-config'
 
-function App() {
+import { Layout, Spin } from 'antd'
+
+import routes from '@/router'
+import TYHeader from '@/layout/Header'
+import TYSider from '@/layout/Sider'
+
+const { Header, Content, Sider } = Layout
+
+export default memo(function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+    <HashRouter>
+      <Suspense
+        fallback={
+          <div className="example">
+            <Spin size="large" tip="Loading..." />
+          </div>
+        }
+      >
+        <Layout>
+          <Sider width={256} style={{ minHeight: '100vh' }}>
+            <TYSider />
+          </Sider>
+          <Layout>
+            <Header
+              style={{ background: '#fff', textAlign: 'center', padding: 0 }}
+            >
+              <TYHeader />
+            </Header>
+            <Content style={{ margin: '24px 16px 0' }}>
+              <div
+                style={{
+                  padding: 24,
+                  background: '#fff',
+                  minHeight: 'calc(100vh - 100px)',
+                }}
+              >
+                {renderRoutes(routes)}
+              </div>
+            </Content>
+          </Layout>
+        </Layout>
+      </Suspense>
+    </HashRouter>
+  )
+})
