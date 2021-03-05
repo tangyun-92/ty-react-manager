@@ -1,16 +1,24 @@
-import React, { memo, Suspense } from 'react'
+import React, { memo, Suspense, useState } from 'react'
 import { HashRouter } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
 
 import { Layout, Spin } from 'antd'
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 
 import routes from '@/router'
 import TYHeader from '@/layout/Header'
 import TYSider from '@/layout/Sider'
+import TYBreadcrumb from '@/layout/Breadcrumb'
 
 const { Header, Content, Sider } = Layout
 
-export default memo(function App() {
+function App() {
+  const [collapsed, setCollapsed] = useState(false)
+
+  const toggle = () => {
+    setCollapsed(!collapsed)
+  }
+
   return (
     <HashRouter>
       <Suspense
@@ -21,21 +29,48 @@ export default memo(function App() {
         }
       >
         <Layout>
-          <Sider width={256} style={{ minHeight: '100vh' }}>
+          <Sider
+            width={256}
+            style={{
+              overflow: 'auto',
+              height: 'calc(100vh - 0px)',
+            }}
+            collapsible
+            collapsed={collapsed}
+            trigger={null}
+          >
             <TYSider />
           </Sider>
-          <Layout>
+          <Layout className="site-layout">
             <Header
-              style={{ background: '#fff', textAlign: 'center', padding: 0 }}
+              className="site-layout-background"
+              style={{
+                background: '#fff',
+                textAlign: 'center',
+                padding: 0,
+                height: '60px',
+                display: 'flex',
+              }}
             >
+              {React.createElement(
+                collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+                {
+                  className: 'trigger',
+                  onClick: toggle,
+                }
+              )}
               <TYHeader />
             </Header>
-            <Content style={{ margin: '24px 16px 0' }}>
+            <TYBreadcrumb />
+            <Content
+              style={{ margin: '0 16px' }}
+              className="site-layout-background"
+            >
               <div
                 style={{
                   padding: 24,
                   background: '#fff',
-                  minHeight: 'calc(100vh - 100px)',
+                  minHeight: 'calc(100vh - 130px)',
                 }}
               >
                 {renderRoutes(routes)}
@@ -46,4 +81,6 @@ export default memo(function App() {
       </Suspense>
     </HashRouter>
   )
-})
+}
+
+export default memo(App)

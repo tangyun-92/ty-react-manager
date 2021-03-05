@@ -100,3 +100,37 @@ span:hover.link {
   background: rgba(0, 0, 0, 0.05);
   border-radius: 4px;
 }
+
+
+/* 修改 antd 默认样式 */
+.ant-layout-sider {
+  background: #125894;
+}
+
+.ant-menu.ant-menu-dark {
+  background: #125894;
+}
+
+.ant-menu.ant-menu-dark,
+.ant-menu-dark .ant-menu-sub,
+.ant-menu.ant-menu-dark .ant-menu-sub {
+  background: #0b5390;
+}
+
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
+  background: #0b5390;
+}
+
+.trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+  background-color: #014c8c;
+  color: #fff;
+}
+
+.trigger:hover {
+  color: #eee;
+}

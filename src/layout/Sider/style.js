@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 
 export const SiderWrapper = styled.div`
+  min-height: calc(100vh - 60px);
+  overflow-y: scroll;
+
   .logo {
-    line-height: 90px;
-    padding-left: 20px;
-    background-color: #002140;
+    height: 62px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
 
     img {
       height: 35px;
