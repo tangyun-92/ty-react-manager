@@ -101,6 +101,19 @@ span:hover.link {
   border-radius: 4px;
 }
 
+.site-layout-background {
+  background: #fff;
+  text-align: center;
+  padding: 0;
+  height: 60px;
+  display: flex;
+}
+
+.content {
+  padding: 24px;
+  background: #fff;
+  min-height: calc(100vh - 130px);
+}
 
 /* 修改 antd 默认样式 */
 .ant-layout-sider {

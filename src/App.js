@@ -1,86 +1,33 @@
-import React, { memo, Suspense, useState } from 'react'
+import React, { memo, Suspense } from 'react'
 import { HashRouter } from 'react-router-dom'
-import { renderRoutes } from 'react-router-config'
+import renderRoutes from '@/utils/renderRoutes'
 
-import { Layout, Spin } from 'antd'
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
+import { Spin } from 'antd'
 
 import routes from '@/router'
-import TYHeader from '@/layout/Header'
-import TYSider from '@/layout/Sider'
-import TYBreadcrumb from '@/layout/Breadcrumb'
 
-const { Header, Content, Sider } = Layout
+import Layout from '@/layout'
+
+const authed = false // 如果登陆之后可以利用redux修改该值(关于redux不在我们这篇文章的讨论范围之内）
+const authPath = '/login' // 默认未登录的时候返回的页面，可以自行设置
 
 function App() {
-  const [collapsed, setCollapsed] = useState(false)
-
-  const toggle = () => {
-    setCollapsed(!collapsed)
+  if (authed) {
+    return <Layout />
   }
-
-  return (
-    <HashRouter>
-      <Suspense
-        fallback={
-          <div className="example">
-            <Spin size="large" tip="Loading..." />
-          </div>
-        }
-      >
-        <Layout>
-          <Sider
-            width={256}
-            style={{
-              overflow: 'auto',
-              height: 'calc(100vh - 0px)',
-            }}
-            collapsible
-            collapsed={collapsed}
-            trigger={null}
-          >
-            <TYSider />
-          </Sider>
-          <Layout className="site-layout">
-            <Header
-              className="site-layout-background"
-              style={{
-                background: '#fff',
-                textAlign: 'center',
-                padding: 0,
-                height: '60px',
-                display: 'flex',
-              }}
-            >
-              {React.createElement(
-                collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-                {
-                  className: 'trigger',
-                  onClick: toggle,
-                }
-              )}
-              <TYHeader />
-            </Header>
-            <TYBreadcrumb />
-            <Content
-              style={{ margin: '0 16px' }}
-              className="site-layout-background"
-            >
-              <div
-                style={{
-                  padding: 24,
-                  background: '#fff',
-                  minHeight: 'calc(100vh - 130px)',
-                }}
-              >
-                {renderRoutes(routes)}
-              </div>
-            </Content>
-          </Layout>
-        </Layout>
-      </Suspense>
-    </HashRouter>
-  )
+    return (
+      <HashRouter>
+        <Suspense
+          fallback={
+            <div className="example">
+              <Spin size="large" tip="Loading..." />
+            </div>
+          }
+        >
+          {renderRoutes(routes, authed, authPath)}
+        </Suspense>
+      </HashRouter>
+    )
 }
 
 export default memo(App)
