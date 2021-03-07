@@ -5,16 +5,40 @@ import { renderRoutes } from 'react-router-config'
 import { Layout, Spin } from 'antd'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 
-import routes from '@/router'
 import TYHeader from '@/layout/Header'
 import TYSider from '@/layout/Sider'
 import TYBreadcrumb from '@/layout/Breadcrumb'
+import { shallowEqual, useSelector } from 'react-redux'
 
 const { Header, Content, Sider } = Layout
 
-function Main() {
+function Main(props) {
+  /**
+   * state and props
+   */
+  const { route } = props
   const [collapsed, setCollapsed] = useState(false)
 
+  /**
+   * redux hooks
+   */
+  const { username } = useSelector(
+    (state) => ({
+      username: state.user.get('username'),
+    }),
+    shallowEqual
+  )
+
+  /**
+   * other handle
+   */
+  if (!username) {
+    props.history.push('/login')
+  }
+  
+  /**
+   * other methods
+   */
   const toggle = () => {
     setCollapsed(!collapsed)
   }
@@ -55,7 +79,7 @@ function Main() {
               style={{ margin: '0 16px' }}
               className="site-layout-background"
             >
-              <div className="content">{renderRoutes(routes)}</div>
+              <div className="content">{renderRoutes(route.routes)}</div>
             </Content>
           </Layout>
         </Layout>

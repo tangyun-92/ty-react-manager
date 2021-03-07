@@ -1,40 +1,35 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
-// const Main = React.lazy(() => import('@/pages/main'))
-const Login = React.lazy(() => import('@/pages/login'))
-const TestPlan = React.lazy(() => import('@/pages/basic-data/test-plan'))
-const ReportInfo = React.lazy(() => import('@/pages/basic-data/report-info'))
-
 const routes = [
   {
     path: '/',
     exact: true,
     requiresAuth: true,
-    render: () => <Redirect to="/basic-data/test-plan" />,
+    render: () => <Redirect to={'/basic-data/test-plan'} />,
   },
   {
     path: '/login',
-    component: Login,
+    component: React.lazy(() => import('@/pages/login')),
     requiresAuth: false,
   },
   {
     path: '/basic-data',
-    component: TestPlan,
+    component: React.lazy(() => import('@/layout')),
     requiresAuth: true,
     routes: [
       {
         path: '/basic-data',
         exact: true,
-        render: () => <Redirect to="/basic-data/test-plan" />,
+        render: () => <Redirect to={'/basic-data/test-plan'} />,
       },
       {
         path: '/basic-data/test-plan',
-        component: TestPlan,
+        component: React.lazy(() => import('@/pages/basic-data/test-plan')),
       },
       {
         path: '/basic-data/report-info',
-        component: ReportInfo,
+        component: React.lazy(() => import('@/pages/basic-data/report-info')),
       },
     ],
   },

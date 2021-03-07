@@ -17,9 +17,11 @@ const renderRoutes = (
           strict={route.strict}
           render={(props) => {
             if (!route.requiresAuth || authed || route.path === authPath) {
-              return (
-                <route.component {...props} {...extraProps} route={route} />
-              )
+              return route.render
+                ? route.render({ ...props, ...extraProps, route: route })
+                : route.component && (
+                    <route.component {...props} {...extraProps} route={route} />
+                  )
             }
             return (
               <Redirect
