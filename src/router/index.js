@@ -5,18 +5,23 @@ const routes = [
   {
     path: '/',
     exact: true,
-    requiresAuth: true,
-    render: () => <Redirect to={'/basic-data/test-plan'} />,
+    auth: true,
+    render: () => <Redirect to={'/login'} />,
   },
   {
     path: '/login',
     component: React.lazy(() => import('@/pages/login')),
-    requiresAuth: false,
+    auth: false,
+  },
+  {
+    path: '/notFound',
+    component: React.lazy(() => import('@/pages/404')),
+    auth: false,
   },
   {
     path: '/basic-data',
     component: React.lazy(() => import('@/layout')),
-    requiresAuth: true,
+    auth: true,
     routes: [
       {
         path: '/basic-data',

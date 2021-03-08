@@ -8,7 +8,6 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 import TYHeader from '@/layout/Header'
 import TYSider from '@/layout/Sider'
 import TYBreadcrumb from '@/layout/Breadcrumb'
-import { shallowEqual, useSelector } from 'react-redux'
 
 const { Header, Content, Sider } = Layout
 
@@ -16,25 +15,17 @@ function Main(props) {
   /**
    * state and props
    */
-  const { route } = props
+  const { routes } = props
+  console.log(routes)
   const [collapsed, setCollapsed] = useState(false)
 
   /**
    * redux hooks
    */
-  const { username } = useSelector(
-    (state) => ({
-      username: state.user.get('username'),
-    }),
-    shallowEqual
-  )
 
   /**
    * other handle
    */
-  if (!username) {
-    props.history.push('/login')
-  }
   
   /**
    * other methods
@@ -79,7 +70,7 @@ function Main(props) {
               style={{ margin: '0 16px' }}
               className="site-layout-background"
             >
-              <div className="content">{renderRoutes(route.routes)}</div>
+              <div className="content">{renderRoutes(routes.routes)}</div>
             </Content>
           </Layout>
         </Layout>

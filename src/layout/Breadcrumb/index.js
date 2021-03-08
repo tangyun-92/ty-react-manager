@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-03-05 16:53:44
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-05 21:38:49
+ * @Last Modified time: 2021-03-08 16:37:00
  * 面包屑
  */
 import React, { memo } from 'react'
@@ -19,11 +19,15 @@ function TYBreadcrumb(props) {
     let currentMenu = menuConfig.find((item) => {
       return `/${pathnameArray[1]}` === item.key
     })
-    let currentSubMenu = currentMenu.children.find((item) => {
-      return pathname === item.key
-    })
-    menuArray.push(currentMenu.title)
-    menuArray.push(currentSubMenu.title)
+    if (currentMenu) {
+      let currentSubMenu = currentMenu.children.find((item) => {
+        return pathname === item.key
+      })
+      if (currentSubMenu) {
+        menuArray.push(currentMenu.title)
+        menuArray.push(currentSubMenu.title)
+      }
+    }
   }
 
   return (

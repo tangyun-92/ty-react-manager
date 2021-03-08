@@ -2,11 +2,11 @@
  * @Author: 唐云
  * @Date: 2021-03-05 17:17:53
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-07 22:08:32
+ * @Last Modified time: 2021-03-08 16:55:19
  * 登录
  */
 import React, { memo } from 'react'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 import { Form, Input, Button } from 'antd'
@@ -29,19 +29,10 @@ export default memo(function Login(props) {
    * redux hooks
    */
   const dispatch = useDispatch()
-  const { username } = useSelector(
-    (state) => ({
-      username: state.user.get('username'),
-    }),
-    shallowEqual
-  )
 
   /**
    *other handle
    */
-  if (username) {
-    props.history.push('basic-data/test-plan')
-  }
 
   /**
    * other methods
