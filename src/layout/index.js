@@ -1,5 +1,5 @@
 import React, { memo, Suspense, useState } from 'react'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
 
 import { Layout, Spin } from 'antd'
@@ -34,7 +34,7 @@ function Main(props) {
   }
 
   return (
-    <HashRouter>
+    <Router>
       <Suspense
         fallback={
           <div className="example">
@@ -74,7 +74,7 @@ function Main(props) {
           </Layout>
         </Layout>
       </Suspense>
-    </HashRouter>
+    </Router>
   )
 }
 

@@ -23,7 +23,7 @@ function FrontendAuth(props) {
   )
   if (token) {
     // 如果用户已登录
-    if (pathname === '/login') {
+    if (pathname === '/login' || pathname === '/') {
       // 访问登录页面重定向到首页
       return <Redirect to="/basic-data/test-plan" />
     } else {

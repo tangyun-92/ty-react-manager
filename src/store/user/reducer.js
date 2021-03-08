@@ -4,7 +4,7 @@ import * as actionTypes from './constants'
 
 const defaultState = Map({
   username: '', // 用户名,
-  token: 'token', // token
+  token: '', // token
 })
 
 function reducer(state = defaultState, action) {

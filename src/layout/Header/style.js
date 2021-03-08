@@ -12,9 +12,10 @@ export const HeaderWrapper = styled.div`
     text-align: right;
     color: #fff;
 
-    a {
+    .layout {
       margin-left: 20px;
       color: #fff;
+      cursor: pointer;
     }
   }
 `

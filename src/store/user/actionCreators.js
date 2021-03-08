@@ -9,7 +9,7 @@ const changeUsernameAction = (username) => ({
 })
 
 // token
-const changeTokenAction = token => ({
+export const changeTokenAction = token => ({
   type: actionTypes.CHANGE_TOKEN,
   token
 })
@@ -18,6 +18,7 @@ const changeTokenAction = token => ({
 export const getLoginAction = (data) => {
   return (dispatch) => {
     login(data).then((res) => {
+      console.log(res)
       dispatch(changeUsernameAction(res.data.yhzh))
       dispatch(changeTokenAction('token'))
     })

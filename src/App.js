@@ -1,5 +1,5 @@
 import React, { memo, Suspense } from 'react'
-import { HashRouter, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
 
 import { Spin } from 'antd'
 
@@ -8,7 +8,7 @@ import FrontendAuth from '@/utils/FrontendAuth' // 鉴权
 
 const App = () => {
   return (
-    <HashRouter>
+    <Router>
       <Suspense
         fallback={
           <div className="example">
@@ -20,7 +20,7 @@ const App = () => {
           <FrontendAuth routerConfig={routes}></FrontendAuth>
         </Switch>
       </Suspense>
-    </HashRouter>
+    </Router>
   )
 }
 
