@@ -1,8 +1,7 @@
-import React, { memo, Suspense, useState } from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
+import React, { memo, useState } from 'react'
 import { renderRoutes } from 'react-router-config'
 
-import { Layout, Spin } from 'antd'
+import { Layout } from 'antd'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 
 import TYHeader from '@/layout/Header'
@@ -25,7 +24,7 @@ function Main(props) {
   /**
    * other handle
    */
-  
+
   /**
    * other methods
    */
@@ -34,47 +33,37 @@ function Main(props) {
   }
 
   return (
-    <Router>
-      <Suspense
-        fallback={
-          <div className="example">
-            <Spin size="large" tip="Loading..." />
-          </div>
-        }
+    <Layout>
+      <Sider
+        className="sider"
+        width={256}
+        collapsible
+        collapsed={collapsed}
+        trigger={null}
+        style={{ overflow: 'auto', height: 'calc(100vh - 0px)' }}
       >
-        <Layout>
-          <Sider
-            className="sider"
-            width={256}
-            collapsible
-            collapsed={collapsed}
-            trigger={null}
-            style={{ overflow: 'auto', height: 'calc(100vh - 0px)' }}
-          >
-            <TYSider />
-          </Sider>
-          <Layout className="site-layout">
-            <Header className="site-layout-background">
-              {React.createElement(
-                collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-                {
-                  className: 'trigger',
-                  onClick: toggle,
-                }
-              )}
-              <TYHeader />
-            </Header>
-            <TYBreadcrumb />
-            <Content
-              style={{ margin: '0 16px' }}
-              className="site-layout-background"
-            >
-              <div className="content">{renderRoutes(routes.routes)}</div>
-            </Content>
-          </Layout>
-        </Layout>
-      </Suspense>
-    </Router>
+        <TYSider />
+      </Sider>
+      <Layout className="site-layout">
+        <Header className="site-layout-background">
+          {React.createElement(
+            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+            {
+              className: 'trigger',
+              onClick: toggle,
+            }
+          )}
+          <TYHeader />
+        </Header>
+        <TYBreadcrumb />
+        <Content
+          style={{ margin: '0 16px' }}
+          className="site-layout-background"
+        >
+          <div className="content">{renderRoutes(routes.routes)}</div>
+        </Content>
+      </Layout>
+    </Layout>
   )
 }
 

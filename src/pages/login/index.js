@@ -2,12 +2,11 @@
  * @Author: 唐云
  * @Date: 2021-03-05 17:17:53
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-08 16:55:19
+ * @Last Modified time: 2021-03-08 17:46:14
  * 登录
  */
 import React, { memo } from 'react'
 import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router'
 
 import { Form, Input, Button } from 'antd'
 
@@ -23,7 +22,6 @@ export default memo(function Login(props) {
   /**
    * state and props
    */
-  const history = useHistory()
 
   /**
    * redux hooks
@@ -39,7 +37,6 @@ export default memo(function Login(props) {
    */
   // 登录
   const onFinish = (data) => {
-    history.push('/basic-data/test-plan')
     dispatch(getLoginAction({ data }))
   }
   const onFinishFailed = (errorInfo) => {
