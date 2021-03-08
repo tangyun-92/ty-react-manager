@@ -2,18 +2,26 @@
  * @Author: 唐云
  * @Date: 2021-03-05 16:53:44
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-08 16:37:00
+ * @Last Modified time: 2021-03-08 17:15:43
  * 面包屑
  */
 import React, { memo } from 'react'
 import { Breadcrumb } from 'antd'
-import { withRouter } from 'react-router'
+import { useHistory } from 'react-router'
 
 import menuConfig from '@/config/menuConfig'
 
-function TYBreadcrumb(props) {
+function TYBreadcrumb() {
+  /**
+   * state and props
+   */
+  const history = useHistory()
+
+  /**
+   * other handles
+   */
   let menuArray = []
-  const pathname = props.location.pathname
+  const pathname = history.location.pathname
   if (pathname !== '/login' && pathname !== '/' && pathname !== '/basic-data') {
     const pathnameArray = pathname.split('/')
     let currentMenu = menuConfig.find((item) => {
@@ -41,4 +49,4 @@ function TYBreadcrumb(props) {
   )
 }
 
-export default withRouter(memo(TYBreadcrumb))
+export default memo(TYBreadcrumb)

@@ -3,7 +3,6 @@ import React, { memo, useState } from 'react'
 import { Row, Col } from 'antd'
 
 import { HeaderWrapper } from './style'
-import { withRouter } from 'react-router'
 
 function Header() {
   /**
@@ -23,4 +22,4 @@ function Header() {
   )
 }
 
-export default withRouter(memo(Header))
+export default memo(Header)

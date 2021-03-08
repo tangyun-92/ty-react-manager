@@ -8,13 +8,12 @@ function FrontendAuth(props) {
   const { pathname } = location
   const pathnameArr = '/' + pathname.split('/')[1]
 
-  const { username } = useSelector(
+  const { token } = useSelector(
     (state) => ({
-      username: state.user.get('username'),
+      token: state.user.get('token'),
     }),
     shallowEqual
   )
-  // const username = ''
 
   // 如果该路由不用进行权限校验，登录状态下登陆页除外
   // 因为登陆后，无法跳转到登陆页
@@ -22,8 +21,7 @@ function FrontendAuth(props) {
   const targetRouterConfig = routerConfig.find(
     (item) => item.path === pathnameArr
   )
-  console.log(targetRouterConfig)
-  if (username) {
+  if (token) {
     // 如果用户已登录
     if (pathname === '/login') {
       // 访问登录页面重定向到首页

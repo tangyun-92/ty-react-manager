@@ -1,25 +1,24 @@
 import React, { memo, useEffect, useState } from 'react'
-import { NavLink, withRouter } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 
 import { Menu } from 'antd'
-import {
-  UserOutlined,
-} from '@ant-design/icons'
+import { UserOutlined } from '@ant-design/icons'
 
 import menuConfig from '@/config/menuConfig'
 import { SiderWrapper } from './style'
 const { SubMenu } = Menu
 
-function Sider(props) {
+function Sider() {
   /**
    * state and props
    */
+  const history = useHistory()
   const [menuTreeNode, setMenuTreeNode] = useState(null)
 
   /**
    * other handles
    */
-  let pathname = props.location.pathname
+  let pathname = history.location.pathname
   if (pathname === '/') {
     pathname = '/basic-data/test-plan'
   }
@@ -52,8 +51,7 @@ function Sider(props) {
 
   return (
     <SiderWrapper>
-      <div className="logo">
-      </div>
+      <div className="logo"></div>
       <Menu
         theme="dark"
         mode="inline"
@@ -66,4 +64,4 @@ function Sider(props) {
   )
 }
 
-export default withRouter(memo(Sider))
+export default memo(Sider)

@@ -16,7 +16,6 @@ function Main(props) {
    * state and props
    */
   const { routes } = props
-  console.log(routes)
   const [collapsed, setCollapsed] = useState(false)
 
   /**
