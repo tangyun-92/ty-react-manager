@@ -12,6 +12,10 @@ export const HeaderWrapper = styled.div`
     text-align: right;
     color: #fff;
 
+    .exam-list {
+      cursor: pointer;
+    }
+    
     .layout {
       margin-left: 20px;
       color: #fff;
