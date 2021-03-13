@@ -7,7 +7,7 @@ import { HeaderWrapper } from './style'
 import {
   changeTokenAction,
   changeResetUserAction,
-  changeCurrentExamPlanAction,
+  getCurrentExamPlanAction,
   changeLoginStatusAction,
 } from '@/store/user/actionCreators'
 
@@ -17,7 +17,7 @@ function Header() {
   /**
    * state and hooks
    */
-  const [currentVal, setCurrentVal] = useState('')
+  const [currentVal, setCurrentVal] = useState('') // 考试计划select选中的值
 
   /**
    * react hooks
@@ -25,10 +25,10 @@ function Header() {
   const dispatch = useDispatch()
   const { username, examList, currentExamPlan, loginStatus } = useSelector(
     (state) => ({
-      username: state.user.get('username'),
-      examList: state.user.get('examList'),
-      currentExamPlan: state.user.get('currentExamPlan'),
-      loginStatus: state.user.get('loginStatus'),
+      username: state.user.get('username'), // 用户名
+      examList: state.user.get('examList'), // 考试计划列表
+      currentExamPlan: state.user.get('currentExamPlan'), // 选中的考试计划
+      loginStatus: state.user.get('loginStatus'), // 登录状态
     }),
     shallowEqual
   )
@@ -36,21 +36,16 @@ function Header() {
   /**
    * other handles
    */
+  // 退出登录
   const handleLayout = () => {
     dispatch(changeTokenAction(''))
     dispatch(changeResetUserAction(''))
   }
 
-  const handleChangeExamList = (e) => {
-    setCurrentVal(e.label)
-  }
+  // 切换考试计划
   const handleOk = () => {
-    dispatch(changeCurrentExamPlanAction(currentVal))
+    dispatch(getCurrentExamPlanAction(currentVal))
     dispatch(changeLoginStatusAction(false))
-  }
-
-  const handleChangeModal = () => {
-    dispatch(changeLoginStatusAction(true))
   }
 
   return (
@@ -58,7 +53,7 @@ function Header() {
       <Row className="header-top">
         <Col
           span={12}
-          onClick={(e) => handleChangeModal()}
+          onClick={(e) => dispatch(changeLoginStatusAction(true))}
           className="exam-list"
         >
           {currentExamPlan}
@@ -87,7 +82,7 @@ function Header() {
           placeholder="请选择考试计划"
           style={{ width: 320 }}
           labelInValue
-          onChange={(e) => handleChangeExamList(e)}
+          onChange={(e) => setCurrentVal(e)}
         >
           {examList.map((item, index) => {
             return (

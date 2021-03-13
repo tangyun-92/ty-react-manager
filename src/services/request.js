@@ -1,66 +1,92 @@
 import axios from 'axios'
+import store from '@/store'
+import { Redirect } from 'react-router'
+
+import { message } from 'antd'
 
 import { BASE_URL, TIMEOUT } from './config'
+import {
+  changeResetUserAction,
+  changeTokenAction,
+} from '@/store/user/actionCreators'
 
-export default function request(option) {
-  return new Promise((resolve, reject) => {
-    const instance = axios.create({
-      baseURL: BASE_URL,
-      timeout: TIMEOUT,
-    })
+const service = axios.create({
+  baseURL: BASE_URL,
+  headers: { 'X-Requested-With': 'XMLHttpRequest' },
+  withCredentials: true,
+  timeout: TIMEOUT,
+})
 
-    // 配置请求和响应拦截
-    instance.interceptors.request.use(
-      (config) => {
-        // console.log('来到了request拦截success中');
-        // 1.当发送网络请求时, 在页面中添加一个loading组件, 作为动画
+/**
+ * 请求拦截器
+ * 统一处理请求拦截，如：添加token等
+ */
+service.interceptors.request.use(
+  (config) => {
+    const token = store.getState().user.get('token')
+    console.log(token)
+    if (token) {
+      config.headers['Sfrz-Manage-Token'] = token
+    }
+    if (config.method === 'get') {
+      config.params = config.data
+    }
+    return config
+  },
+  (error) => {
+    console.log(error)
+    return Promise.reject(error)
+  }
+)
 
-        // 2.某些请求要求用户必须登录, 判断用户是否有token, 如果没有token跳转到login页面
-
-        // 3.对请求的参数进行序列化(看服务器是否需要序列化)
-        // config.data = qs.stringify(config.data)
-        // console.log(config);
-
-        // 4.等等
-        return config
-      },
-      (err) => {
-        // console.log('来到了request拦截failure中');
-        return err
+/**
+ * 响应拦截器
+ * 统一处理响应拦截
+ * 如：重定向、消息提示等操作
+ */
+service.interceptors.response.use(
+  (response) => {
+    const token = store.getState().user.get('token')
+    const resToken = response.headers['sfrz-manage-token']
+    if (!token) {
+      store.dispatch(changeTokenAction(resToken))
+    }
+    const res = response.data
+    if (!res.result && res.code === 2008) {
+      store.dispatch(changeResetUserAction(''))
+      return <Redirect to="/login" />
+    } else if (!res.result && res.code !== 2008) {
+      message.error(res.message || 'Error')
+      return Promise.reject(new Error(res.message || 'Error'))
+    } else {
+      return res
+    }
+  },
+  (error) => {
+    console.log(error.response)
+    if (error.response) {
+      const { status } = error.response
+      if (status === 401) {
+        const encodeUrl = encodeURIComponent(`${window.location.href}`)
+        window.location.href = BASE_URL + `/ssoLogin?redirectUrl=${encodeUrl}`
+        return
       }
-    )
+    }
+    message.error(error.message || 'Error')
+    return Promise.reject(error)
+  }
+)
 
-    instance.interceptors.response.use(
-      (response) => {
-        // console.log('来到了response拦截success中');
-        return response.data
-      },
-      (err) => {
-        console.log('来到了response拦截failure中')
-        console.log(err)
-        if (err && err.response) {
-          switch (err.response.status) {
-            case 400:
-              err.message = '请求错误'
-              break
-            case 401:
-              err.message = '未授权的访问'
-              break
-            default:
-              err.message = '其他错误信息'
-          }
-        }
-        return err
-      }
-    )
-
-    // 2.传入对象进行网络请求
-    instance(option)
-      .then((res) => {
-        resolve(res)
-      })
-      .catch((err) => {
-        reject(err)
-      })
+const request = (requestObj) => {
+  const { url, method, data, timeout } = requestObj
+  return service({
+    url,
+    method: method || 'post',
+    data: {
+      data,
+    },
+    timeout: timeout || 15000,
   })
 }
+
+export default request
