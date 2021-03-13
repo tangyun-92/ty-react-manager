@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { renderRoutes } from 'react-router-config'
 
 import { Layout } from 'antd'
@@ -7,6 +7,8 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 import TYHeader from '@/layout/Header'
 import TYSider from '@/layout/Sider'
 import TYBreadcrumb from '@/layout/Breadcrumb'
+import { useDispatch } from 'react-redux'
+import { getBaseDataAction } from '@/store/base-data/actionCreators'
 
 const { Header, Content, Sider } = Layout
 
@@ -20,10 +22,14 @@ function Main(props) {
   /**
    * redux hooks
    */
+  const dispatch = useDispatch()
 
   /**
-   * other handle
+   * other hooks
    */
+  useEffect(() => {
+    dispatch(getBaseDataAction())
+  })
 
   /**
    * other methods

@@ -10,6 +10,7 @@ import {
   getCurrentExamPlanAction,
   changeLoginStatusAction,
 } from '@/store/user/actionCreators'
+import { getBaseDataAction } from '@/store/base-data/actionCreators'
 
 const { Option } = Select
 
@@ -45,6 +46,7 @@ function Header() {
   // 切换考试计划
   const handleOk = () => {
     dispatch(getCurrentExamPlanAction(currentVal))
+    dispatch(getBaseDataAction())
     dispatch(changeLoginStatusAction(false))
   }
 
