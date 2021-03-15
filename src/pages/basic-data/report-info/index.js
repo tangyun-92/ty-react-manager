@@ -2,17 +2,21 @@
  * @Author: 唐云
  * @Date: 2021-03-05 14:39:16
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-15 14:29:28
+ * @Last Modified time: 2021-03-15 16:39:09
  * 考生报名信息
  */
 import React, { memo, useEffect, useState } from 'react'
 
-import { Form, Input, Button, Table, Tag, Pagination } from 'antd'
+import { Form, Input, Button, Table, Tag, Pagination, message } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 
-import { getReportInfoList } from '@/api/basic-data/report-info'
+import { getReportInfoList, clearAll } from '@/api/basic-data/report-info'
 import UploadFile from '@/components/uploadFile'
-import { useDispatch } from 'react-redux'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { changeImportModalStatusAction } from '@/store/common/actionCreators'
+import confirm from 'antd/lib/modal/confirm'
+import { exportExcelMethod } from '@/utils'
+import { BASE_URL } from '@/services/config'
 
 export default memo(function ReportInfo() {
   /**
@@ -44,9 +48,7 @@ export default memo(function ReportInfo() {
       title: '性别',
       dataIndex: 'xb',
       render: (tags) => (
-        <>
-          {<Tag color={tags === '男' ? 'blue' : 'orange'}>{tags}</Tag>}
-        </>
+        <>{<Tag color={tags === '男' ? 'blue' : 'orange'}>{tags}</Tag>}</>
       ),
     },
     {
@@ -83,6 +85,12 @@ export default memo(function ReportInfo() {
    * redux hooks
    */
   const dispatch = useDispatch()
+  const { token } = useSelector(
+    (state) => ({
+      token: state.user.get('token'),
+    }),
+    shallowEqual
+  )
 
   /**
    * other hooks
@@ -129,6 +137,41 @@ export default memo(function ReportInfo() {
     setCurrentPage(page)
   }
 
+  // 清空
+  const handleClearAll = () => {
+    confirm({
+      title: '是否确定清空',
+      icon: <ExclamationCircleOutlined />,
+      okText: '是',
+      okType: 'danger',
+      cancelText: '否',
+      onOk() {
+        clearAll()
+          .then((res) => {
+            message.success(res.message)
+          })
+          .catch((err) => {
+            message.error(err)
+          })
+      },
+      onCancel() {
+        console.log('Cancel')
+      },
+    })
+  }
+
+  // 模板下载
+  const templateDownload = () => {
+    const url = `${BASE_URL}/bmxx/download`
+    const data = {
+      method: 'get',
+      url: url,
+      token: token,
+      fileName: '考生报名信息模板.xlsx',
+    }
+    exportExcelMethod(data)
+  }
+
   return (
     <div>
       <div className="basic-header">
@@ -155,8 +198,12 @@ export default memo(function ReportInfo() {
           >
             离线导入
           </Button>
-          <Button type="primary">清空</Button>
-          <Button type="primary">模板下载</Button>
+          <Button type="primary" onClick={handleClearAll}>
+            清空
+          </Button>
+          <Button type="primary" onClick={templateDownload}>
+            模板下载
+          </Button>
         </div>
         <Table
           columns={columns}

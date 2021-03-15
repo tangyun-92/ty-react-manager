@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-03-14 22:21:52
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-15 15:50:50
+ * @Last Modified time: 2021-03-15 16:07:28
  * 上传组件
  */
 import React, { memo, useState } from 'react'
@@ -69,7 +69,7 @@ export default memo(function UploadFile(props) {
       })
       .catch((err) => {
         setUploading(false)
-        console.log(err)
+        console.error(err)
       })
   }
 
