@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-03-05 14:39:16
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-15 09:16:47
+ * @Last Modified time: 2021-03-15 14:29:28
  * 考生报名信息
  */
 import React, { memo, useEffect, useState } from 'react'
@@ -18,12 +18,13 @@ export default memo(function ReportInfo() {
   /**
    * state and props
    */
-  const [searchForm] = Form.useForm()
-  const [tableData, setTableData] = useState([])
-  const [searchData, setSearchData] = useState({})
-  const [total, setTotal] = useState(0)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
+  const [searchForm] = Form.useForm() // 搜索form
+  const [tableData, setTableData] = useState([]) // 表格数据
+  const [searchData, setSearchData] = useState({}) // 搜索数据
+  const [total, setTotal] = useState(0) // 总计
+  const [currentPage, setCurrentPage] = useState(1) // 当前选中页面
+  const [pageSize, setPageSize] = useState(10) // 每页显示条数
+  const [loading, setLoading] = useState(false) // table加载
 
   // table
   const columns = [
@@ -44,11 +45,7 @@ export default memo(function ReportInfo() {
       dataIndex: 'xb',
       render: (tags) => (
         <>
-          {tags === '男' ? (
-            <Tag color="geekblue">{tags}</Tag>
-          ) : (
-            <Tag color="volcano">{tags}</Tag>
-          )}
+          {<Tag color={tags === '男' ? 'blue' : 'orange'}>{tags}</Tag>}
         </>
       ),
     },
@@ -94,16 +91,26 @@ export default memo(function ReportInfo() {
     searchForm.setFieldsValue(['xm', 'sfzh', 'ksh'])
   }, [searchForm])
   useEffect(() => {
+    setLoading(true)
     // 获取列表
     getReportInfoList({
       ...searchData,
       currentPage,
       pageSize,
-    }).then((res) => {
-      setTableData(res.data.records)
-      setTotal(res.data.total)
-      setCurrentPage(res.data.current)
     })
+      .then((res) => {
+        setTableData(res.data.records)
+        setTotal(res.data.total)
+        setCurrentPage(res.data.current)
+      })
+      .catch((err) => {
+        setTableData([])
+        setTotal(0)
+        setCurrentPage(1)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }, [searchData, currentPage, pageSize])
 
   /**
@@ -111,6 +118,7 @@ export default memo(function ReportInfo() {
    */
   // 搜索
   const handleClickSearch = async () => {
+    setCurrentPage(1)
     const values = await searchForm.validateFields()
     setSearchData(values)
   }
@@ -126,7 +134,7 @@ export default memo(function ReportInfo() {
       <div className="basic-header">
         <Form layout="inline" form={searchForm} labelCol={{ offset: 1 }}>
           <Form.Item label="姓名" name="xm">
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" onPressEnter={handleClickSearch} />
           </Form.Item>
           <Form.Item label="身份证号" name="sfzh">
             <Input placeholder="请输入" />
@@ -141,7 +149,10 @@ export default memo(function ReportInfo() {
       </div>
       <div className="basic-content">
         <div className="basic-content-button">
-          <Button type="primary" onClick={(e) => dispatch(changeImportModalStatusAction(true))}>
+          <Button
+            type="primary"
+            onClick={(e) => dispatch(changeImportModalStatusAction(true))}
+          >
             离线导入
           </Button>
           <Button type="primary">清空</Button>
@@ -152,6 +163,7 @@ export default memo(function ReportInfo() {
           dataSource={tableData}
           rowKey={(record) => record.id}
           pagination={false}
+          loading={loading}
         />
       </div>
       <div className="basic-footer">

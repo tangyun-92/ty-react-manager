@@ -117,6 +117,10 @@ span:hover.link {
 }
 
 /* 修改 antd 默认样式 */
+.ant-table {
+  color: #666;
+}
+
 .ant-layout-sider {
   background: #125894;
 }

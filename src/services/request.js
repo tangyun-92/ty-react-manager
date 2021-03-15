@@ -24,7 +24,6 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     const token = store.getState().user.get('token')
-    console.log(token)
     if (token) {
       config.headers['Sfrz-Manage-Token'] = token
     }
