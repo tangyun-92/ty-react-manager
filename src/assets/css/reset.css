@@ -103,7 +103,7 @@ span:hover.link {
 }
 
 .site-layout-background {
-  background: #fff;
+  /* background: #fff; */
   text-align: center;
   padding: 0;
   height: 60px;
@@ -111,9 +111,9 @@ span:hover.link {
 }
 
 .content {
-  padding: 24px;
-  background: #fff;
+  width: 100%;
   min-height: calc(100vh - 130px);
+  overflow: scroll;
 }
 
 /* 修改 antd 默认样式 */
@@ -147,4 +147,39 @@ span:hover.link {
 
 .trigger:hover {
   color: #eee;
+}
+
+/* content基础样式 */
+.basic-header {
+  width: 100%;
+  padding: 20px 30px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+}
+
+.basic-header .ant-form-item {
+  margin-bottom: 16px;
+  margin-right: 25px;
+}
+
+.basic-content {
+  width: 100%;
+  padding: 20px;
+  margin: 10px 0;
+  background-color: #fff;
+  min-height: calc(100vh - 260px);
+}
+
+.basic-content-button {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.basic-content-button .ant-btn {
+  margin-right: 10px;
+}
+
+.basic-footer {
+  margin: 20px 0 30px 0;
 }
