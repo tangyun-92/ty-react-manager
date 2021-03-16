@@ -36,11 +36,11 @@ li {
 
 a {
   text-decoration: none;
-  color: #666;
+  /* color: #666; */
 }
 
 a:hover {
-  color: #666;
+  /* color: #666; */
   text-decoration: none;
 }
 
@@ -117,6 +117,10 @@ span:hover.link {
 }
 
 /* 修改 antd 默认样式 */
+.ant-pagination {
+  margin: 25px 0;
+}
+
 .ant-table {
   color: #666;
 }
@@ -156,14 +160,14 @@ span:hover.link {
 /* content基础样式 */
 .basic-header {
   width: 100%;
-  padding: 20px 30px;
+  padding: 24px 30px;
+  margin-bottom: 16px;
   background-color: #fff;
   display: flex;
   justify-content: space-between;
 }
 
 .basic-header .ant-form-item {
-  margin-bottom: 16px;
   margin-right: 25px;
 }
 
@@ -172,7 +176,7 @@ span:hover.link {
   padding: 20px;
   margin: 10px 0;
   background-color: #fff;
-  min-height: calc(100vh - 260px);
+  min-height: calc(100vh - 160px);
 }
 
 .basic-content-button {
@@ -184,6 +188,6 @@ span:hover.link {
   margin-right: 10px;
 }
 
-.basic-footer {
+/* .basic-footer {
   margin: 20px 0 30px 0;
-}
+} */

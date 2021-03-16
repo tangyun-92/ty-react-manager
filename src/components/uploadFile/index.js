@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-03-14 22:21:52
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-15 16:07:28
+ * @Last Modified time: 2021-03-16 10:30:27
  * 上传组件
  */
 import React, { memo, useState } from 'react'
@@ -11,14 +11,17 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { Button, message, Modal, Upload } from 'antd'
 
 import { BASE_URL } from '@/services/config'
-import { changeImportModalStatusAction } from '@/store/common/actionCreators'
+import {
+  changeImportModalStatusAction,
+  getTableListAction,
+} from '@/store/common/actionCreators'
 import axios from 'axios'
 
 export default memo(function UploadFile(props) {
   /**
    * state and props
    */
-  let { title } = props
+  let { title, api } = props
   const [fileList, setFileList] = useState([])
   const [uploading, setUploading] = useState(false)
 
@@ -65,6 +68,7 @@ export default memo(function UploadFile(props) {
         setFileList([])
         setUploading(false)
         dispatch(changeImportModalStatusAction(false))
+        dispatch(getTableListAction(api))
         message.success(res.data.message)
       })
       .catch((err) => {

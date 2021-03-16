@@ -2,19 +2,24 @@
  * @Author: 唐云
  * @Date: 2021-03-05 14:39:16
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-15 16:39:09
+ * @Last Modified time: 2021-03-16 11:15:18
  * 考生报名信息
  */
-import React, { memo, useEffect, useState } from 'react'
-
-import { Form, Input, Button, Table, Tag, Pagination, message } from 'antd'
-import { ExclamationCircleOutlined } from '@ant-design/icons'
-
-import { getReportInfoList, clearAll } from '@/api/basic-data/report-info'
-import UploadFile from '@/components/uploadFile'
+import React, { memo, useEffect } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { changeImportModalStatusAction } from '@/store/common/actionCreators'
-import confirm from 'antd/lib/modal/confirm'
+
+import { Form, Input, Button, Tag } from 'antd'
+
+import UploadFile from '@/components/uploadFile'
+import MyTable from '@/components/MyTable'
+import { getReportInfoList, clearAll } from '@/api/basic-data/report-info'
+import {
+  changeCurrentPageAction,
+  changeImportModalStatusAction,
+  changeSearchDataAction,
+  getClearAllAction,
+  getTableListAction,
+} from '@/store/common/actionCreators'
 import { exportExcelMethod } from '@/utils'
 import { BASE_URL } from '@/services/config'
 
@@ -23,12 +28,6 @@ export default memo(function ReportInfo() {
    * state and props
    */
   const [searchForm] = Form.useForm() // 搜索form
-  const [tableData, setTableData] = useState([]) // 表格数据
-  const [searchData, setSearchData] = useState({}) // 搜索数据
-  const [total, setTotal] = useState(0) // 总计
-  const [currentPage, setCurrentPage] = useState(1) // 当前选中页面
-  const [pageSize, setPageSize] = useState(10) // 每页显示条数
-  const [loading, setLoading] = useState(false) // table加载
 
   // table
   const columns = [
@@ -98,66 +97,21 @@ export default memo(function ReportInfo() {
   useEffect(() => {
     searchForm.setFieldsValue(['xm', 'sfzh', 'ksh'])
   }, [searchForm])
-  useEffect(() => {
-    setLoading(true)
-    // 获取列表
-    getReportInfoList({
-      ...searchData,
-      currentPage,
-      pageSize,
-    })
-      .then((res) => {
-        setTableData(res.data.records)
-        setTotal(res.data.total)
-        setCurrentPage(res.data.current)
-      })
-      .catch((err) => {
-        setTableData([])
-        setTotal(0)
-        setCurrentPage(1)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [searchData, currentPage, pageSize])
 
   /**
    * other handles
    */
   // 搜索
   const handleClickSearch = async () => {
-    setCurrentPage(1)
+    dispatch(changeCurrentPageAction(1))
     const values = await searchForm.validateFields()
-    setSearchData(values)
-  }
-
-  // 页码切换
-  const changePagination = (page, pageSize) => {
-    setPageSize(pageSize)
-    setCurrentPage(page)
+    dispatch(changeSearchDataAction(values))
+    dispatch(getTableListAction(getReportInfoList))
   }
 
   // 清空
   const handleClearAll = () => {
-    confirm({
-      title: '是否确定清空',
-      icon: <ExclamationCircleOutlined />,
-      okText: '是',
-      okType: 'danger',
-      cancelText: '否',
-      onOk() {
-        clearAll()
-          .then((res) => {
-            message.success(res.message)
-          })
-          .catch((err) => {
-            message.error(err)
-          })
-      },
-      onCancel() {
-        console.log('Cancel')
-      },
-    })
+    dispatch(getClearAllAction(clearAll, getReportInfoList))
   }
 
   // 模板下载
@@ -180,10 +134,10 @@ export default memo(function ReportInfo() {
             <Input placeholder="请输入" onPressEnter={handleClickSearch} />
           </Form.Item>
           <Form.Item label="身份证号" name="sfzh">
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" onPressEnter={handleClickSearch} />
           </Form.Item>
           <Form.Item label="考生号" name="ksh">
-            <Input placeholder="请输入" />
+            <Input placeholder="请输入" onPressEnter={handleClickSearch} />
           </Form.Item>
         </Form>
         <Button type="primary" onClick={handleClickSearch}>
@@ -205,25 +159,9 @@ export default memo(function ReportInfo() {
             模板下载
           </Button>
         </div>
-        <Table
-          columns={columns}
-          dataSource={tableData}
-          rowKey={(record) => record.id}
-          pagination={false}
-          loading={loading}
-        />
+        <MyTable api={getReportInfoList} columns={columns} />
       </div>
-      <div className="basic-footer">
-        <Pagination
-          total={total}
-          showTotal={(total) => `共 ${total} 条`}
-          current={currentPage}
-          pageSize={pageSize}
-          onChange={changePagination}
-          showSizeChanger
-        />
-      </div>
-      <UploadFile title="离线导入" />
+      <UploadFile title="离线导入" api={getReportInfoList} />
     </div>
   )
 })

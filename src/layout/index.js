@@ -61,13 +61,13 @@ function Main(props) {
           )}
           <TYHeader />
         </Header>
-        <TYBreadcrumb />
-        <Content
-          style={{ margin: '0 16px' }}
-          className="site-layout-background"
-        >
-          <div className="content">{renderRoutes(routes.routes)}</div>
-        </Content>
+          <TYBreadcrumb />
+          <Content
+            style={{ margin: '0 16px' }}
+            className="site-layout-background"
+          >
+            <div className="content">{renderRoutes(routes.routes)}</div>
+          </Content>
       </Layout>
     </Layout>
   )
