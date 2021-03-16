@@ -118,7 +118,8 @@ span:hover.link {
 
 /* 修改 antd 默认样式 */
 .ant-pagination {
-  margin: 25px 0;
+  margin: 25px 20px 15px 0;
+  text-align: right;
 }
 
 .ant-table {
@@ -186,6 +187,10 @@ span:hover.link {
 
 .basic-content-button .ant-btn {
   margin-right: 10px;
+}
+
+.content-table {
+  min-height: calc(100vh - 300px);
 }
 
 /* .basic-footer {

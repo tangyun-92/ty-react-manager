@@ -52,21 +52,25 @@ export default memo(function MyPagination(props) {
 
   return (
     <div>
-      <Table
-        columns={columns}
-        dataSource={tableData}
-        rowKey={(record) => record.id}
-        pagination={false}
-        loading={tableLoading}
-      />
-      <Pagination
-        total={total}
-        showTotal={(total) => `共 ${total} 条`}
-        current={currentPage}
-        pageSize={pageSize}
-        onChange={changePagination}
-        showSizeChanger
-      />
+      <div className="content-table">
+        <Table
+          columns={columns}
+          dataSource={tableData}
+          rowKey={(record) => record.id}
+          pagination={false}
+          loading={tableLoading}
+        />
+      </div>
+      <div className="content-pagination">
+        <Pagination
+          total={total}
+          showTotal={(total) => `共 ${total} 条`}
+          current={currentPage}
+          pageSize={pageSize}
+          onChange={changePagination}
+          showSizeChanger
+        />
+      </div>
     </div>
   )
 })
