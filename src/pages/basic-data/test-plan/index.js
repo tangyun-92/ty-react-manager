@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-03-05 14:39:06
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-17 08:11:55
+ * @Last Modified time: 2021-03-17 13:24:35
  * 考试计划
  */
 import React, { memo, useState, useEffect } from 'react'
@@ -12,14 +12,17 @@ import { Button, Tag, Space } from 'antd'
 
 import MyTable from '@/components/MyTable'
 import Form from './components/Form'
+import ParamForm from './components/ParamForm'
 import {
   getTestPlanList,
   delTestPlan,
   getTestTypeList,
+  getTestPlanParam,
 } from '@/api/basic-data/test-plan'
 import {
   changeEditModalStatusAction,
   changeModalTitleAction,
+  changeOtherModalStatusAction,
   getClearAllAction,
 } from '@/store/common/actionCreators'
 import moment from 'moment'
@@ -28,8 +31,9 @@ export default memo(function TestPlan() {
   /**
    * state and props
    */
-  const [testType, setTestType] = useState({})
-  const [tableRowData, setTableRowData] = useState({})
+  const [testType, setTestType] = useState({}) // 考试类型
+  const [tableRowData, setTableRowData] = useState({}) // 表格行数据
+  const [paramInfo, setParamInfo] = useState([]) // 参数信息
 
   useEffect(() => {
     getTestTypeList().then((res) => {
@@ -86,7 +90,12 @@ export default memo(function TestPlan() {
       dataIndex: '',
       render: (text, record) => (
         <Space size="middle">
-          <a href="#/">参数配置</a>
+          <a
+            href="#/"
+            onClick={(e) => paramModal('考试计划参数信息配置', record)}
+          >
+            参数配置
+          </a>
           <a href="#/" onClick={(e) => operaModal('编辑', record)}>
             编辑
           </a>
@@ -130,6 +139,16 @@ export default memo(function TestPlan() {
     dispatch(changeModalTitleAction(`${type}考试计划`))
   }
 
+  const paramModal = (type, item) => {
+    // const data = JSON.parse(JSON.stringify(item))
+    // setTableRowData(item)
+    getTestPlanParam(item.ksjhbm).then((res) => {
+      setParamInfo(res.data)
+    })
+    dispatch(changeOtherModalStatusAction(true))
+    dispatch(changeModalTitleAction(type))
+  }
+
   return (
     <div>
       <div className="basic-content">
@@ -141,6 +160,7 @@ export default memo(function TestPlan() {
         <MyTable api={getTestPlanList} columns={columns} />
       </div>
       <Form testType={testType} tableRowData={tableRowData} />
+      <ParamForm paramInfo={paramInfo} />
     </div>
   )
 })

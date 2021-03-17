@@ -56,7 +56,7 @@ service.interceptors.response.use(
       return <Redirect to="/login" />
     } else if (!res.result && res.code !== 2008) {
       message.error(res.message || 'Error')
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(res.message || 'Error')
     } else {
       return res
     }

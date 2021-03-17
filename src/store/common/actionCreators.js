@@ -52,6 +52,12 @@ export const changeEditModalStatusAction = (editModalStatus) => ({
   editModalStatus,
 })
 
+// 其他modal显示隐藏
+export const changeOtherModalStatusAction = (otherModalStatus) => ({
+  type: actionTypes.CHANGE_OTHER_MODAL_STATUS,
+  otherModalStatus,
+})
+
 // modal标题
 export const changeModalTitleAction = (modalTitle) => ({
   type: actionTypes.CHANGE_MODAL_TITLE,

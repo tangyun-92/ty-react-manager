@@ -11,6 +11,7 @@ const defaultState = Map({
   tableData: [], // 表格数据
   searchData: {}, // 搜索数据
   editModalStatus: false, // 编辑modal状态
+  otherModalStatus: false, // 其他modal状态
   modalTitle: '', // modal的标题
 })
 
@@ -32,6 +33,8 @@ function reducer(state = defaultState, action) {
       return state.set('searchData', action.searchData)
     case actionType.CHANGE_EDIT_MODAL_STATUS:
       return state.set('editModalStatus', action.editModalStatus)
+    case actionType.CHANGE_OTHER_MODAL_STATUS:
+      return state.set('otherModalStatus', action.otherModalStatus)
     case actionType.CHANGE_MODAL_TITLE:
       return state.set('modalTitle', action.modalTitle)
     default:

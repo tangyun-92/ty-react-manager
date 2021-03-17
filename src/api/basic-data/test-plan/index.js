@@ -1,8 +1,8 @@
 /*
- * @Author: 唐云 
- * @Date: 2021-03-15 21:25:26 
+ * @Author: 唐云
+ * @Date: 2021-03-15 21:25:26
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-16 16:40:42
+ * @Last Modified time: 2021-03-17 13:43:48
  * 考试计划
  */
 import request from '@/services/request'
@@ -61,5 +61,28 @@ export function getTestTypeList() {
   return request({
     url: '/ksjh/kslx',
     method: 'post',
+  })
+}
+
+/**
+ * 获取考试计划参数
+ */
+export function getTestPlanParam(data) {
+  return request({
+    url: '/ksjhcs/get',
+    method: 'post',
+    data,
+  })
+}
+
+/**
+ * 修改考试计划参数
+ * @param {*} data
+ */
+export function updateTestPlanParam(data) {
+  return request({
+    url: '/ksjhcs/upd',
+    method: 'post',
+    data,
   })
 }
