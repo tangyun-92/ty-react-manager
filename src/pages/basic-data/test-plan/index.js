@@ -2,17 +2,17 @@
  * @Author: 唐云
  * @Date: 2021-03-05 14:39:06
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-17 13:24:35
+ * @Last Modified time: 2021-03-17 16:22:17
  * 考试计划
  */
 import React, { memo, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { Button, Tag, Space } from 'antd'
+import { Button, Tag, Space, Modal, Input, Form } from 'antd'
 
 import MyTable from '@/components/MyTable'
-import Form from './components/Form'
 import ParamForm from './components/ParamForm'
+import MyForm from './components/Form'
 import {
   getTestPlanList,
   delTestPlan,
@@ -34,12 +34,9 @@ export default memo(function TestPlan() {
   const [testType, setTestType] = useState({}) // 考试类型
   const [tableRowData, setTableRowData] = useState({}) // 表格行数据
   const [paramInfo, setParamInfo] = useState([]) // 参数信息
-
-  useEffect(() => {
-    getTestTypeList().then((res) => {
-      setTestType(res.data)
-    })
-  }, [])
+  const [delModalStatus, setDelModalStatus] = useState(false) // 清空modal状态
+  const [delId, setDelId] = useState('') // 删除的考试计划编码
+  const [form] = Form.useForm()
 
   // table
   const columns = [
@@ -99,7 +96,7 @@ export default memo(function TestPlan() {
           <a href="#/" onClick={(e) => operaModal('编辑', record)}>
             编辑
           </a>
-          <a href="#/" onClick={(e) => handleDelete(record.id)}>
+          <a href="#/" onClick={(e) => handleDelete(record.ksjhbm)}>
             删除
           </a>
         </Space>
@@ -115,14 +112,20 @@ export default memo(function TestPlan() {
   /**
    * other hooks
    */
+  useEffect(() => {
+    getTestTypeList().then((res) => {
+      setTestType(res.data)
+    })
+  }, [])
 
   /**
    * other handles
    */
-
   // 删除考试计划
   const handleDelete = (id) => {
-    dispatch(getClearAllAction(delTestPlan, getTestPlanList, '删除', id))
+    setDelId(id)
+    setDelModalStatus(true)
+    form.resetFields()
   }
 
   // 点击添加/编辑按钮
@@ -139,14 +142,30 @@ export default memo(function TestPlan() {
     dispatch(changeModalTitleAction(`${type}考试计划`))
   }
 
+  // 点击参数配置
   const paramModal = (type, item) => {
-    // const data = JSON.parse(JSON.stringify(item))
-    // setTableRowData(item)
-    getTestPlanParam(item.ksjhbm).then((res) => {
+    getTestPlanParam({ ksjhbm: item.ksjhbm }).then((res) => {
       setParamInfo(res.data)
     })
     dispatch(changeOtherModalStatusAction(true))
     dispatch(changeModalTitleAction(type))
+  }
+
+  // 删除modal关闭
+  const onCancel = () => {
+    setDelModalStatus(false)
+  }
+
+  // 删除考试计划
+  const onOk = () => {
+    form.validateFields().then(() => {
+      const data = {
+        ksjhbm: delId,
+        delpwd: form.getFieldsValue().delpwd,
+      }
+      dispatch(getClearAllAction(delTestPlan, getTestPlanList, '删除', data))
+      setDelModalStatus(false)
+    })
   }
 
   return (
@@ -159,7 +178,30 @@ export default memo(function TestPlan() {
         </div>
         <MyTable api={getTestPlanList} columns={columns} />
       </div>
-      <Form testType={testType} tableRowData={tableRowData} />
+      <Modal
+        title="清空密码确认"
+        visible={delModalStatus}
+        onCancel={(e) => onCancel()}
+        onOk={() => onOk()}
+        okText="保存"
+        width={400}
+        forceRender
+      >
+        <Form layout="horizontal" form={form}>
+          <Form.Item
+            label="确认密码"
+            name="delpwd"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input placeholder="请输入" />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <MyForm type={testType} row={tableRowData} />
       <ParamForm paramInfo={paramInfo} />
     </div>
   )

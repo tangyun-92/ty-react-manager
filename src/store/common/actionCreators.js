@@ -116,7 +116,7 @@ export const getClearAllAction = (clearAllApi, getTableListApi, type, data) => {
             dispatch(getTableListAction(getTableListApi))
           })
           .catch((err) => {
-            message.error(err)
+            console.error(err)
           })
       },
       onCancel() {

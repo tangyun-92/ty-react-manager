@@ -24,7 +24,6 @@ export default memo(function ParamForm(props) {
    */
   const { paramInfo } = props
   const [dataSource, setDataSource] = useState([])
-  console.log(paramInfo)
 
   let columns = [
     {
@@ -94,7 +93,6 @@ export default memo(function ParamForm(props) {
     const save = async () => {
       try {
         const values = await form.validateFields()
-        console.log(values)
         toggleEdit()
         handleSave({ ...record, ...values })
       } catch (errInfo) {
@@ -103,7 +101,6 @@ export default memo(function ParamForm(props) {
     }
 
     handleSave = (row) => {
-      console.log(row)
       const newData = [...dataSource]
       const index = newData.findIndex((item) => row.id === item.id)
       const item = newData[index]

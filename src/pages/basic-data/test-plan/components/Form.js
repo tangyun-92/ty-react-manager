@@ -19,7 +19,7 @@ export default memo(function EditForm(props) {
   /**
    * state and props
    */
-  let { testType, tableRowData } = props
+  let { type, row } = props
   const [form] = Form.useForm()
   const [testTypeArray, setTestTypeArray] = useState([])
 
@@ -39,9 +39,9 @@ export default memo(function EditForm(props) {
    * other hooks
    */
   useEffect(() => {
-    setTestTypeArray(objectToArray(testType))
-    form.setFieldsValue(tableRowData)
-  }, [testType, tableRowData, form])
+    setTestTypeArray(objectToArray(type))
+    form.setFieldsValue(row)
+  }, [type, row, form])
 
   /**
    * other handles
@@ -72,7 +72,7 @@ export default memo(function EditForm(props) {
           dispatch(getTableListAction(getTestPlanList))
         })
       } else {
-        editTestPlan({ ...data, id: tableRowData.id }).then((res) => {
+        editTestPlan({ ...data, id: row.id }).then((res) => {
           message.success(res.message)
           dispatch(changeEditModalStatusAction(false))
           dispatch(getTableListAction(getTestPlanList))
