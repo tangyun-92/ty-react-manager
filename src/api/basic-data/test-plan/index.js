@@ -2,7 +2,7 @@
  * @Author: 唐云 
  * @Date: 2021-03-15 21:25:26 
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-16 11:12:20
+ * @Last Modified time: 2021-03-16 16:40:42
  * 考试计划
  */
 import request from '@/services/request'
@@ -51,5 +51,15 @@ export function delTestPlan(data) {
     url: '/ksjh/del',
     method: 'post',
     data,
+  })
+}
+
+/**
+ * 获取考试类型
+ */
+export function getTestTypeList() {
+  return request({
+    url: '/ksjh/kslx',
+    method: 'post',
   })
 }

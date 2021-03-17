@@ -2,22 +2,40 @@
  * @Author: 唐云
  * @Date: 2021-03-05 14:39:06
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-16 11:15:23
+ * @Last Modified time: 2021-03-17 08:11:55
  * 考试计划
  */
-import React, { memo } from 'react'
+import React, { memo, useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
-import confirm from 'antd/lib/modal/confirm'
-import { ExclamationCircleOutlined } from '@ant-design/icons'
-import { Button, Tag, Space, message } from 'antd'
+import { Button, Tag, Space } from 'antd'
 
 import MyTable from '@/components/MyTable'
-import { getTestPlanList, delTestPlan } from '@/api/basic-data/test-plan'
+import Form from './components/Form'
+import {
+  getTestPlanList,
+  delTestPlan,
+  getTestTypeList,
+} from '@/api/basic-data/test-plan'
+import {
+  changeEditModalStatusAction,
+  changeModalTitleAction,
+  getClearAllAction,
+} from '@/store/common/actionCreators'
+import moment from 'moment'
 
 export default memo(function TestPlan() {
   /**
    * state and props
    */
+  const [testType, setTestType] = useState({})
+  const [tableRowData, setTableRowData] = useState({})
+
+  useEffect(() => {
+    getTestTypeList().then((res) => {
+      setTestType(res.data)
+    })
+  }, [])
 
   // table
   const columns = [
@@ -36,6 +54,7 @@ export default memo(function TestPlan() {
     {
       title: '考试类型',
       dataIndex: 'kslx',
+      render: (data) => <>{testType[data]}</>,
     },
     {
       title: '开始时间',
@@ -68,7 +87,9 @@ export default memo(function TestPlan() {
       render: (text, record) => (
         <Space size="middle">
           <a href="#/">参数配置</a>
-          <a href="#/">编辑</a>
+          <a href="#/" onClick={(e) => operaModal('编辑', record)}>
+            编辑
+          </a>
           <a href="#/" onClick={(e) => handleDelete(record.id)}>
             删除
           </a>
@@ -80,6 +101,7 @@ export default memo(function TestPlan() {
   /**
    * redux hooks
    */
+  const dispatch = useDispatch()
 
   /**
    * other hooks
@@ -91,35 +113,34 @@ export default memo(function TestPlan() {
 
   // 删除考试计划
   const handleDelete = (id) => {
-    confirm({
-      title: '是否确定删除',
-      icon: <ExclamationCircleOutlined />,
-      okText: '是',
-      okType: 'danger',
-      cancelText: '否',
-      onOk() {
-        delTestPlan(id)
-          .then((res) => {
-            message.success(res.message)
-          })
-          .catch((err) => {
-            message.error(err)
-          })
-      },
-      onCancel() {
-        console.log('Cancel')
-      },
-    })
+    dispatch(getClearAllAction(delTestPlan, getTestPlanList, '删除', id))
+  }
+
+  // 点击添加/编辑按钮
+  const operaModal = (type, item) => {
+    if (item) {
+      const data = JSON.parse(JSON.stringify(item))
+      data.kssj = moment(data.kssj)
+      data.jssj = moment(data.jssj)
+      data.ksnd = moment(data.ksnd)
+      setTableRowData(data)
+    }
+
+    dispatch(changeEditModalStatusAction(true))
+    dispatch(changeModalTitleAction(`${type}考试计划`))
   }
 
   return (
     <div>
       <div className="basic-content">
         <div className="basic-content-button">
-          <Button type="primary">添加</Button>
+          <Button type="primary" onClick={(e) => operaModal('添加')}>
+            添加
+          </Button>
         </div>
         <MyTable api={getTestPlanList} columns={columns} />
       </div>
+      <Form testType={testType} tableRowData={tableRowData} />
     </div>
   )
 })

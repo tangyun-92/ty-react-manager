@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-03-05 14:39:16
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-16 11:15:18
+ * @Last Modified time: 2021-03-16 14:29:02
  * 考生报名信息
  */
 import React, { memo, useEffect } from 'react'
@@ -111,7 +111,7 @@ export default memo(function ReportInfo() {
 
   // 清空
   const handleClearAll = () => {
-    dispatch(getClearAllAction(clearAll, getReportInfoList))
+    dispatch(getClearAllAction(clearAll, getReportInfoList, '清空'))
   }
 
   // 模板下载

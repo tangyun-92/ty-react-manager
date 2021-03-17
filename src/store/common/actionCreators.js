@@ -46,13 +46,28 @@ export const changeSearchDataAction = (searchData) => ({
   searchData,
 })
 
-// 获取列表
-export const getTableListAction = (getTableList) => {
+// 编辑modal显示隐藏
+export const changeEditModalStatusAction = (editModalStatus) => ({
+  type: actionTypes.CHANGE_EDIT_MODAL_STATUS,
+  editModalStatus,
+})
+
+// modal标题
+export const changeModalTitleAction = (modalTitle) => ({
+  type: actionTypes.CHANGE_MODAL_TITLE,
+  modalTitle,
+})
+
+/**
+ * 获取列表
+ * @param {*} getTableListApi 获取列表的api
+ */
+export const getTableListAction = (getTableListApi) => {
   return (dispatch, getState) => {
     const searchData = getState().common.get('searchData')
     const currentPage = getState().common.get('currentPage')
     const pageSize = getState().common.get('pageSize')
-    getTableList({
+    getTableListApi({
       ...searchData,
       currentPage,
       pageSize,
@@ -73,20 +88,26 @@ export const getTableListAction = (getTableList) => {
   }
 }
 
-// 清空
-export const getClearAllAction = (clearAll, getTableList) => {
+/**
+ * 清空/删除
+ * @param {*} clearAllApi 清空或删除的api
+ * @param {*} getTableListApi 获取列表的api
+ * @param {*} type 清空/删除
+ * @param {*} data 需要传的值
+ */
+export const getClearAllAction = (clearAllApi, getTableListApi, type, data) => {
   return (dispatch) => {
     confirm({
-      title: '是否确定清空',
+      title: `是否确定${type}？`,
       icon: <ExclamationCircleOutlined />,
       okText: '是',
       okType: 'danger',
       cancelText: '否',
       onOk() {
-        clearAll()
+        clearAllApi(data)
           .then((res) => {
             message.success(res.message)
-            dispatch(getTableListAction(getTableList))
+            dispatch(getTableListAction(getTableListApi))
           })
           .catch((err) => {
             message.error(err)
