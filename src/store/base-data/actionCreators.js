@@ -35,10 +35,14 @@ export const changeRoundListAction = (roundList) => ({
 export const getBaseDataAction = () => {
   return (dispatch, getState) => {
     getUserOrgTreeList().then((res) => {
-      dispatch(changeUserOrgTreeListAction(res.data))
+      const array = []
+      array.push(res.data)
+      dispatch(changeUserOrgTreeListAction(array))
     })
     getUserExamOrgTreeList().then((res) => {
-      dispatch(changeUserExamOrgTreeListAction(res.data))
+      const array = []
+      array.push(res.data)
+      dispatch(changeUserExamOrgTreeListAction(array))
     })
 
     const ksjhbm = getState().user.get('ksjhbm')

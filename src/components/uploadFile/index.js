@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-03-14 22:21:52
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-16 10:30:27
+ * @Last Modified time: 2021-03-18 11:09:58
  * 上传组件
  */
 import React, { memo, useState } from 'react'
@@ -21,7 +21,7 @@ export default memo(function UploadFile(props) {
   /**
    * state and props
    */
-  let { title, api } = props
+  let { title, api, apiData } = props
   const [fileList, setFileList] = useState([])
   const [uploading, setUploading] = useState(false)
 
@@ -56,7 +56,7 @@ export default memo(function UploadFile(props) {
     setUploading(true)
 
     axios({
-      url: BASE_URL + '/bmxx/import',
+      url: BASE_URL + apiData,
       method: 'post',
       processData: false,
       headers: {

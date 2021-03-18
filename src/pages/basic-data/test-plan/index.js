@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-03-05 14:39:06
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-17 16:22:17
+ * @Last Modified time: 2021-03-18 10:21:56
  * 考试计划
  */
 import React, { memo, useState, useEffect } from 'react'
@@ -80,7 +80,7 @@ export default memo(function TestPlan() {
     },
     {
       title: '创建时间',
-      dataIndex: 'cjsj',
+      dataIndex: 'gxsj',
     },
     {
       title: '操作',

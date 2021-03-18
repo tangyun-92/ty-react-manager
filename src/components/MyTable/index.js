@@ -56,7 +56,7 @@ export default memo(function MyPagination(props) {
         <Table
           columns={columns}
           dataSource={tableData}
-          rowKey={(record) => record.id}
+          rowKey={(record) => record.id || record.sfzjhm}
           pagination={false}
           loading={tableLoading}
         />

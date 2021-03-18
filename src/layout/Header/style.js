@@ -14,6 +14,7 @@ export const HeaderWrapper = styled.div`
 
     .exam-list {
       cursor: pointer;
+      font-size: 18px;
     }
     
     .layout {

@@ -16,7 +16,7 @@ const menuList = [
         key: '/basic-data/stu-choreography',
       },
       {
-        title: '工作人员信息',
+        title: '工作人员信息表',
         key: '/basic-data/per-info',
       },
       {
