@@ -46,6 +46,12 @@ const routes = [
         path: '/basic-data/per-info',
         component: React.lazy(() => import('@/pages/basic-data/per-info')),
       },
+      {
+        path: '/basic-data/per-arrangement',
+        component: React.lazy(() =>
+          import('@/pages/basic-data/per-arrangement')
+        ),
+      },
     ],
   },
 ]

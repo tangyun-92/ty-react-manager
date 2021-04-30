@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-03-18 14:09:50
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-18 14:47:40
+ * @Last Modified time: 2021-04-08 10:35:05
  * 考生编排
  */
 import React, { memo, useEffect, useState } from 'react'
@@ -23,7 +23,7 @@ import {
   getClearAllAction,
   getTableListAction,
 } from '@/store/common/actionCreators'
-import { exportExcelMethod, objectToArray } from '@/utils'
+import { exportExcelMethod } from '@/utils'
 import { BASE_URL } from '@/services/config'
 import { getExamRoomList } from '@/api/public'
 
@@ -98,8 +98,9 @@ export default memo(function StuChoreography() {
    * other hooks
    */
   useEffect(() => {
+    dispatch(changeSearchDataAction(null))
     searchForm.setFieldsValue(['xm', 'sfzh', 'ksh'])
-  }, [searchForm])
+  }, [dispatch, searchForm])
 
   /**
    * other handles

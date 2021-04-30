@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-03-18 09:56:14
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-18 11:10:02
+ * @Last Modified time: 2021-04-08 10:38:52
  * 工作人员信息
  */
 import React, { memo, useEffect, useState } from 'react'
@@ -91,8 +91,9 @@ export default memo(function PerInfo() {
    * other hooks
    */
   useEffect(() => {
+    dispatch(changeSearchDataAction(null))
     searchForm.setFieldsValue(['xm', 'sfzh', 'ksh'])
-  }, [searchForm])
+  }, [searchForm, dispatch])
   useEffect(() => {
     // 获取岗位职责码表数据
     getJobDutyCode().then((res) => {
@@ -107,7 +108,9 @@ export default memo(function PerInfo() {
   const handleClickSearch = async () => {
     dispatch(changeCurrentPageAction(1))
     const values = await searchForm.validateFields()
-    values.ksjg = values.ksjg[values.ksjg.length - 1]
+    if (values.ksjg) {
+      values.ksjg = values.ksjg[values.ksjg.length - 1]
+    }
     dispatch(changeSearchDataAction(values))
     dispatch(getTableListAction(getPerInfoList))
   }

@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-03-05 14:39:16
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-18 11:10:57
+ * @Last Modified time: 2021-04-08 10:35:21
  * 考生报名信息
  */
 import React, { memo, useEffect } from 'react'
@@ -95,8 +95,9 @@ export default memo(function ReportInfo() {
    * other hooks
    */
   useEffect(() => {
+    dispatch(changeSearchDataAction(null))
     searchForm.setFieldsValue(['xm', 'sfzh', 'ksh'])
-  }, [searchForm])
+  }, [searchForm, dispatch])
 
   /**
    * other handles

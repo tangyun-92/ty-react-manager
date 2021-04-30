@@ -173,7 +173,7 @@ span:hover.link {
 /* content基础样式 */
 .basic-header {
   width: 100%;
-  padding: 24px 30px;
+  padding: 24px 30px 12px;
   margin-bottom: 16px;
   background-color: #fff;
   display: flex;
@@ -182,6 +182,7 @@ span:hover.link {
 
 .basic-header .ant-form-item {
   margin-right: 25px;
+  margin-bottom: 15px;
 }
 
 .basic-header .ant-form-item-control-input-content {

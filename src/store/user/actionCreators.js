@@ -5,7 +5,7 @@ import { login } from '@/api/login'
 import { exchangeExam, getUserMenuList, getUserFunctionList } from '@/api/public'
 
 // 清空保存的用户信息
-export const changeResetUserAction = (username) => ({
+export const changeResetUserAction = () => ({
   type: actionTypes.CHANGE_RESET_USER,
 })
 
